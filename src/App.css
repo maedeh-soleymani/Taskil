@@ -1,0 +1,22 @@
+.mainLayout {
+  margin: 1rem;
+  /* background-color: white; */
+  /* padding: 2rem; */
+}
+
+.sectionLayout {
+  padding: 1rem;
+}
+
+.iconBtn{
+  border-radius: 8px;
+  border: 1px solid #e5e4e7;
+  align-items: center;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+
+}
+
+.delStyle {
+  padding: 0px !important;
+}
