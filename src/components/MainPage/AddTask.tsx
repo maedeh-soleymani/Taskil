@@ -55,7 +55,6 @@ const AddTask = () => {
           setTasks([...tasks, newTask]);
           resetForm();
           setAddTaskLoading(false);
-
         } catch (error) {
           console.log("Error:", error);
           setAddTaskLoading(false);
@@ -92,7 +91,8 @@ const AddTask = () => {
                   ></TextField>
                 </Box>
 
-                <IconButton
+                {/* Voice Command Button */}
+                {/* <IconButton
                   sx={{
                     width: 56,
                     height: 56,
@@ -101,7 +101,7 @@ const AddTask = () => {
                   }}
                 >
                   <KeyboardVoiceIcon />
-                </IconButton>
+                </IconButton> */}
               </Stack>
               <Box>
                 <Container className="delStyle">

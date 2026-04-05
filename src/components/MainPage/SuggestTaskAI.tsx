@@ -27,9 +27,6 @@ const SuggestTaskAI = () => {
   const [ShowAIResponse, setShowAIResponse] = useState(false);
   const [AIResponse, setAIResponse] = useState("");
 
-  const testing = () => {
-    console.log("SuggestTaskAI", AllTaskDoneFlag);
-  };
   // ------------------- AI Function Start -------------------------------
   const sendToAI = async () => {
     console.log("SuggestTaskAI", AllTaskDoneFlag);
@@ -114,6 +111,7 @@ ${JSON.stringify(tasks)}`;
   return (
     <>
       <Button
+        disabled={loading}
         startIcon={<AutoAwesomeIcon />}
         color={theme.custom.gradients.primary}
         sx={(theme) => ({
