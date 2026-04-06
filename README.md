@@ -10,7 +10,7 @@ Taskil is a fast and intuitive task management app that helps you capture your t
 
 ## Live Demo
 Check out the project here:  
-[Taskil Live](https://maedeh-soleymani.github.io/Taskil/)
+[Taskil Live](https://taskil-khjn.vercel.app/)
 
 ## Source Code
 Explore the code on GitHub:  
