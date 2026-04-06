@@ -7,8 +7,8 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "cross-env vite",
+    "build": "cross-env vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -22,6 +22,7 @@
     "@mui/x-date-pickers": "^8.27.2",
     "@supabase/supabase-js": "^2.101.1",
     "@tanstack/react-query": "^5.95.2",
+    "cross-env": "^10.1.0",
     "date-fns": "^4.1.0",
     "formik": "^2.4.9",
     "react": "^18.3.1",
