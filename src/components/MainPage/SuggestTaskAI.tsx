@@ -69,28 +69,56 @@ Return ONLY a JSON like this:
 
 Tasks:
 ${JSON.stringify(tasks)}`;
+
     setShowAIResponse(true);
     setLoading(true);
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
-            },
-          ],
-        }),
+
+    // ------------- local tesing ----------
+
+    // const res = await fetch(
+    //   `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       contents: [
+    //         {
+    //           parts: [
+    //             {
+    //               text: prompt,
+    //             },
+    //           ],
+    //         },
+    //       ],
+    //     }),
+    //   },
+    // );
+
+    // ------------- local tesing ----------
+
+    // ------------- server production ----------
+
+    const res = await fetch("/api/gemini", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt,
+              },
+            ],
+          },
+        ],
+      }),
+    });
+
+    // ------------- /server production ----------
 
     const data = await res.json();
     console.log(data);
