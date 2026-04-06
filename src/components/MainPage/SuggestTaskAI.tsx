@@ -74,56 +74,52 @@ ${JSON.stringify(tasks)}`;
     setLoading(true);
 
     // ------------- local tesing ----------
+    let res;
 
-    // const res = await fetch(
-    //   `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       contents: [
-    //         {
-    //           parts: [
-    //             {
-    //               text: prompt,
-    //             },
-    //           ],
-    //         },
-    //       ],
-    //     }),
-    //   },
-    // );
-
-    // ------------- local tesing ----------
-
-    // ------------- server production ----------
-
-    const res = await fetch("/api/gemini", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
+    if (import.meta.env.VITE_MODE === "development") {
+      res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
               {
-                text: prompt,
+                parts: [
+                  {
+                    text: prompt,
+                  },
+                ],
               },
             ],
-          },
-        ],
-      }),
-    });
-
-    // ------------- /server production ----------
-
-    const data = await res.json();
+          }),
+        },
+      );
+    } else {
+      res = await fetch("/api/gemini", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: prompt,
+                },
+              ],
+            },
+          ],
+        }),
+      });
+    }
+    const data = await (res ?? {})?.json();
     console.log(data);
     const response = JSON.parse(
-      data.candidates?.[0]?.content?.parts?.[0]?.text,
+      data?.candidates?.[0]?.content?.parts?.[0]?.text,
     );
     console.log(response);
 

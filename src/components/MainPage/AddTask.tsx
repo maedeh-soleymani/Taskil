@@ -74,6 +74,7 @@ const AddTask = () => {
           <Paper elevation={2} className="sectionLayout">
             <Stack direction="column" spacing={2}>
               <Box sx={{ textAlign: "left" }}>
+                <h5>Taskil {import.meta.env.VITE_APP_VERSION} {import.meta.env.VITE_MODE}</h5>
                 <h2>Add New Task</h2>
               </Box>
               <Stack direction="row" spacing={1}>
