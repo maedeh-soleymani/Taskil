@@ -1,10 +1,20 @@
 import { Box, Button, Checkbox, Chip, Grid, Stack } from "@mui/material";
 import { editTask } from "../../api/tasks";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TaskContext } from "../../context/TaskContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const TaskListItem = ({ task }) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: ({ taskId, updates }) => editTask(taskId, updates),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+
   const { setTasks, tasks } = useContext(TaskContext);
+  const [updatedTasks, setupdatedTasks] = useState([]);
 
   const formatDate = (str) => {
     const date = new Date(str);
@@ -20,13 +30,20 @@ const TaskListItem = ({ task }) => {
     } else newState = 1;
 
     try {
-      const response = await editTask(task.id, { state: newState });
+      mutation.mutate({
+        taskId: task.id,
+        updates: { state: newState },
+      });
+
+      // -------------- Edit Task Using set Tasks ------------
+      // const response = await editTask(task.id, { state: newState });
       // console.log("Change Status Done:", response);
 
-      const updatedTasks = tasks.map((t) =>
-        t.id === task.id ? { ...t, state: newState } : t,
-      );
-      setTasks(updatedTasks); // TODO: if user try to change state of the task after adding teh task without refreash id would be empty and got error
+      // const updatedTasks = tasks.map((t) =>
+      //   t.id === task.id ? { ...t, state: newState } : t,
+      // );
+      // setTasks(updatedTasks); // TODO: if user try to change state of the task after adding teh task without refreash id would be empty and got error
+      //-----------------------------
     } catch (error) {
       console.log("error on changing status:", error);
     }

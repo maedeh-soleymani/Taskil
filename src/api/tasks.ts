@@ -1,7 +1,6 @@
 import { supabase } from "../lib/supabase";
 
 export const getTasks = async () => {
-
   const { data, error } = await supabase
     .from("tasks")
     .select("*")
@@ -37,14 +36,13 @@ export const addTask = async (task‌: {
 export const editTask = async (taskId: string, updates: any) => {
   const { data, error } = await supabase
     .from("tasks")
-    .update(updates) // 👈 فقط فیلدهایی که میخوای تغییر بدی
-    .eq("id", taskId).select(); // 👈 مشخص کردن کدوم تسک
+    .update(updates) //  Fields needed to update
+    .eq("id", taskId)
+    .select();
   // console.log("editTask data:", data);
-
   if (error) {
-    // console.log("Update Error:", error);
+    console.log("Update Error:", error);
     throw error;
   }
-
   return data;
 };
