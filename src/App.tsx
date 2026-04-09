@@ -11,7 +11,6 @@ import {
   Tab,
   Tabs,
 } from "@mui/material";
-import Grid from "@mui/material/Grid";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import AddTask from "./components/MainPage/AddTask";
 import { useEffect, useState } from "react";
@@ -24,9 +23,10 @@ import { ThemeProvider } from "@mui/material";
 import SuggestTaskAI from "./components/MainPage/SuggestTaskAI";
 import MainPage from "./components/MainPage/MainPage";
 import MovieList from "./components/MoviesPage/MovieList";
+import { useQuery } from "@tanstack/react-query";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [AllTaskDoneFlag, setAllTaskDoneFlag] = useState();
   const [value, setValue] = useState(0);
@@ -35,14 +35,27 @@ function App() {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    const fetchList = async () => {
-      const taskList = await getTasks();
-      setTasks(taskList);
-    };
+  const {
+    data: tasks = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: getTasks,
+  });
+  // if (isLoading) console.log("isLoading:", isLoading);
+  if (error) console.log("Error:", error);
 
-    fetchList();
-  }, []);
+
+  // ------------ Getting Tasks with useEffect ------------
+  // useEffect(() => {
+  //   const fetchList = async () => {
+  //     const taskList = await getTasks();
+  //     setTasks(taskList);
+  //   };
+
+  //   fetchList();
+  // }, []);
 
   useEffect(() => {
     setAllTaskDoneFlag(!tasks.some((t) => t.state === 0));
@@ -56,7 +69,7 @@ function App() {
         value={{
           tasks,
           loading,
-          setTasks,
+          // setTasks,
           setLoading,
           setAllTaskDoneFlag,
           AllTaskDoneFlag,
@@ -84,7 +97,7 @@ function App() {
             {/* Content */}
             {/* <Box sx={{ mt: 2 }}> */}
             {/* Uncomment to show Tabs */}
-            {/* {value === 0 && <MainPage />} */} 
+            {/* {value === 0 && <MainPage />} */}
             {/* {value === 1 && <MovieList />} */}
             {/* </Box> */}
           </Box>

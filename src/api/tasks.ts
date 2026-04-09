@@ -1,12 +1,13 @@
 import { supabase } from "../lib/supabase";
 
 export const getTasks = async () => {
+
   const { data, error } = await supabase
     .from("tasks")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) {
-    // console.log("Supabase Err on Getting Tasks:", error);
+    console.log("Supabase Err on Getting Tasks:", error);
     throw error;
   }
   // console.log("Supabase Data on Getting Tasks:", data);

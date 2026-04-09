@@ -16,7 +16,7 @@ type TaskContextType = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 
   tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  // setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 
   AllTaskDoneFlag: boolean;
   setAllTaskDoneFlag: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +27,7 @@ type TaskContextType = {
 export const TaskContext = createContext<TaskContextType>({
   loading: false,
   setLoading: () => {},
-  setTasks: () => {},
+  // setTasks: () => {},
   tasks: [],
   setAllTaskDoneFlag:()=>{},
   AllTaskDoneFlag:false

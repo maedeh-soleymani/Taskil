@@ -23,10 +23,18 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useContext, useState } from "react";
 import { TaskContext } from "../../context/TaskContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AddTask = () => {
   const { tasks, setTasks } = useContext(TaskContext);
   const [addTaskLoading, setAddTaskLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: addTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
 
   return (
     <Formik
@@ -35,22 +43,31 @@ const AddTask = () => {
       onSubmit={async (values, { resetForm }) => {
         setAddTaskLoading(true);
         try {
-          const status = await addTask({
+          mutation.mutate({
             title: values.taskName,
             description: "",
             due_date: new Date(values.due_date),
             priority: values.priority,
           });
-          const newTask = {
-            title: values.taskName,
-            description: "",
-            due_date: new Date(values.due_date),
-            priority: values.priority,
-            id: status[0].id,
-            created_at: new Date(),
-          };
 
-          setTasks([...tasks, newTask]);
+          // ---------------- adding tasks with setTask ----------
+          // const status = await addTask({
+          //   title: values.taskName,
+          //   description: "",
+          //   due_date: new Date(values.due_date),
+          //   priority: values.priority,
+          // });
+          // const newTask = {
+          //   title: values.taskName,
+          //   description: "",
+          //   due_date: new Date(values.due_date),
+          //   priority: values.priority,
+          //   id: status[0].id,
+          //   created_at: new Date(),
+          // };
+
+          // setTasks([...tasks, newTask]);
+          // ----------------------------
           resetForm();
           setAddTaskLoading(false);
         } catch (error) {
