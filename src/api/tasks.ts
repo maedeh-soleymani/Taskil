@@ -46,3 +46,18 @@ export const editTask = async (taskId: string, updates: any) => {
   }
   return data;
 };
+
+export const deleteTask = async (taskId: string) => {
+  const { data, error } = await supabase
+    .from("tasks")
+    .delete()
+    .eq("id", taskId)
+    .select();
+
+  // console.log("deleted rows:", data);
+  if (error) {
+    console.log("Delete Error:", error);
+    throw error;
+  }
+  return data;
+};

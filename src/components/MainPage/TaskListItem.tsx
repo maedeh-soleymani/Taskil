@@ -1,14 +1,32 @@
-import { Box, Button, Checkbox, Chip, Grid, Stack } from "@mui/material";
-import { editTask } from "../../api/tasks";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Chip,
+  Grid,
+  IconButton,
+  Stack,
+} from "@mui/material";
+import { deleteTask, editTask } from "../../api/tasks";
 import { useContext, useState } from "react";
 import { TaskContext } from "../../context/TaskContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import theme from "../../theme/theme";
 
 const TaskListItem = ({ task }) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: ({ taskId, updates }) => editTask(taskId, updates),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: ({ taskId }) => deleteTask(taskId),
+    onSuccess: () => {
+      alert("Task Deleted!");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
@@ -120,9 +138,27 @@ const TaskListItem = ({ task }) => {
         <Box flex={2} sx={{ textAlignLast: "start" }}>
           {formatDate(task.created_at)}
         </Box>
-        {/* <Box>
-          <Button color="secondary" sx={(theme)=>({color:theme.custom.solids.danger})}>Delete</Button>
-        </Box> */}
+        <Box flex={1} sx={{ textAlignLast: "start" }}>
+          <IconButton
+            sx={{
+              width: 40,
+              height: 40,
+              // border: "1px solid #de3b3b",
+              borderRadius: "8px",
+            }}
+            onClick={() => {
+              deleteMutation.mutate({ taskId: task.id });
+            }}
+          >
+            <DeleteForeverIcon sx={(theme)=>({color:theme.custom.solids.danger})}/>
+          </IconButton>
+          {/* <Button
+            color="secondary"
+            sx={(theme) => ({ color: theme.custom.solids.danger })}
+          >
+            Delete
+          </Button> */}
+        </Box>
       </Stack>
     </>
   );

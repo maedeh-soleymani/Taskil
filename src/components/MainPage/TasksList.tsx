@@ -105,14 +105,14 @@ const TasksList = () => {
         >
           Created
         </Box>
-        {/* <Box
-          flex={2}
+        <Box
+          flex={1}
           sx={{
             color: "#8d8d8d",
             alignContent: "center",
             textAlign: "left",
           }}
-        ></Box> */}
+        ></Box>
       </Stack>
       {tasks.length > 0 ? (
         tasks.map((task, key) => {
