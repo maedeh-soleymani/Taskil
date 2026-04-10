@@ -3,6 +3,11 @@ import {
   Button,
   Checkbox,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   IconButton,
   Stack,
@@ -15,6 +20,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import theme from "../../theme/theme";
 
 const TaskListItem = ({ task }) => {
+  const [deleteId, setDeleteId] = useState(null);
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: ({ taskId, updates }) => editTask(taskId, updates),
@@ -147,10 +153,13 @@ const TaskListItem = ({ task }) => {
               borderRadius: "8px",
             }}
             onClick={() => {
-              deleteMutation.mutate({ taskId: task.id });
+              setDeleteId(task.id);
+              // deleteMutation.mutate({ taskId: task.id });
             }}
           >
-            <DeleteForeverIcon sx={(theme)=>({color:theme.custom.solids.danger})}/>
+            <DeleteForeverIcon
+              sx={(theme) => ({ color: theme.custom.solids.danger })}
+            />
           </IconButton>
           {/* <Button
             color="secondary"
@@ -160,6 +169,34 @@ const TaskListItem = ({ task }) => {
           </Button> */}
         </Box>
       </Stack>
+
+      <Dialog open={!!deleteId} onClose={() => setDeleteId(null)}>
+        <DialogTitle>Delete task?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={(theme) => ({ color: theme.palette.secondary.main })}
+            onClick={() => setDeleteId(null)}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            sx={(theme) => ({ color: theme.custom.solids.danger })}
+            // color="error"
+            onClick={() => {
+              deleteMutation.mutate({ taskId: deleteId });
+              setDeleteId(null);
+            }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
