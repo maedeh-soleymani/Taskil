@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -10,6 +11,7 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  Snackbar,
   Stack,
 } from "@mui/material";
 import { deleteTask, editTask } from "../../api/tasks";
@@ -21,6 +23,11 @@ import theme from "../../theme/theme";
 
 const TaskListItem = ({ task }) => {
   const [deleteId, setDeleteId] = useState(null);
+  const [snackBar, setSnackBar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: ({ taskId, updates }) => editTask(taskId, updates),
@@ -32,7 +39,7 @@ const TaskListItem = ({ task }) => {
   const deleteMutation = useMutation({
     mutationFn: ({ taskId }) => deleteTask(taskId),
     onSuccess: () => {
-      alert("Task Deleted!");
+      setSnackBar({open:true, message:"Task Deleted!", severity:"success"})
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
@@ -197,6 +204,10 @@ const TaskListItem = ({ task }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar open={snackBar.open} autoHideDuration={3000} onClose={()=>setSnackBar(prev =>({...prev,open:false}))}>
+        <Alert severity={snackBar.severity}>{snackBar.message}</Alert>
+      </Snackbar>
     </>
   );
 };
